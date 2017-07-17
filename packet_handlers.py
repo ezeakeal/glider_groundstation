@@ -106,10 +106,10 @@ class DataHandler(object):
         self._store_packet(source_id, packet_parts, time_stamp)
         
     def get(self, param):
-        if param not in components.keys():
-            print "Parameter %s is not in components (%s)" % (param, components.keys())
+        if param not in self.components.keys():
+            print "Parameter %s is not in components (%s)" % (param, self.components.keys())
         else:
-            print components[param]
+            print self.components[param]
 
     def get_dict(self):
         return self.components

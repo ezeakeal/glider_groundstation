@@ -78,7 +78,7 @@ class Application(tornado.web.Application):
 def runWebServer(port):
     application = Application()
     if groundstation_config.getboolean("radio", "enabled"):
-        application.radio = GroundRadio()
+        application.radio = GroundRadio(application)
     http_server = tornado.httpserver.HTTPServer(application)
     print "GO TO: http://localhost:%s/" % port
     http_server.listen(port)

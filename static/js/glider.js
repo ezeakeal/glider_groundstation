@@ -38,7 +38,7 @@ function setTelemAjax(){
 
 function setTelemSocket(){
     console.log("Creating websocket")    
-    var ws = new WebSocket("ws://" + window.location.hostname + "/getTelemSocket");
+    var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/getTelemSocket");
 
     ws.onmessage = function(event) {
         parseTelemetryData(event.data);

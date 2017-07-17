@@ -24,7 +24,9 @@ class GroundRadio(SatRadio):
     led_tx = groundstation_config.get("led", "tx")
     led_rx = groundstation_config.get("led", "rx")
 
-    def __init__(self):
+    def __init__(self, application):
+        self.application = application
+
         self.telemetry_handler = TelemetryHandler()
         self.image_handler = ImageHandler()
         self.data_handler = DataHandler()
@@ -53,30 +55,27 @@ class GroundRadio(SatRadio):
             LOG.exception("Error parsing data")
 
     def parse_packet(self, data):
-        if 'rf_data' not in data.keys():
-            return
-        source = data['source_addr']
-        data_packet = data['rf_data']
+        source = data['from']
+        data_packet = data['message']
         time_received = int(time.time())
-        source = "%s" % source.encode('hex')
         LOG.debug("Parsing packet data: %s" % data_packet)
 
-        data_parts = data_packet.split("|")
+        data_parts = str(data_packet).split("|")
         packet_type = data_parts[0]
         packet_data = data_parts[1:]
         self.push_data(source, packet_type, packet_data, time_received)
-        self.push_data_gstation()
+        self.push_data_server()
         self.handle_parsed_packet(source, packet_type, packet_data, time_received)
 
     def handle_parsed_packet(self, source, packet_type, packet_data, time_received):
         if GPIO:
             GPIO.output(self.led_rx, True)
         if packet_type == "T":
-            TelemetryHandler.parse(source, packet_data, time_received)
+            self.telemetry_handler.parse(source, packet_data, time_received)
         if packet_type == "I":
-            ImageHandler.parse(source, packet_data, time_received)
+            self.image_handler.parse(source, packet_data, time_received)
         if packet_type == "D":
-            DataHandler.parse(source, packet_data, time_received)
+            self.data_handler.parse(source, packet_data, time_received)
         if GPIO:
             GPIO.output(self.led_rx, False)
 
@@ -94,11 +93,11 @@ class GroundRadio(SatRadio):
 
     def push_data_server(self):
         data_dictionary = {}
-        all_data = TelemetryHandler.get_all_dict()
+        all_data = self.telemetry_handler.get_all_dict()
         data_dictionary.update(all_data.get("GliderV3", {}))
         data_dictionary.update({"all_data": all_data})
-        data_dictionary.update(ImageHandler.get_dict())
-        data_dictionary.update(DataHandler.get_dict())
+        data_dictionary.update(self.image_handler.get_dict())
+        data_dictionary.update(self.data_handler.get_dict())
         for socket in self.application.socket_list:
             socket.write_message(data_dictionary)
 
