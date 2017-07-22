@@ -1,4 +1,5 @@
 import time
+import serial
 import struct
 import logging
 import crcmod.predefined
@@ -6,7 +7,20 @@ import crcmod.predefined
 from threading import Thread
 
 
-LOG = logging.getLogger("groundstation.%s" % __name__)
+def setup_custom_logger(name):
+    formatter = logging.Formatter(fmt='%(asctime)s - %(levelname)s - %(module)s - %(message)s')
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+    return logger
+
+LOG = setup_custom_logger('rhserial')
+LOG.setLevel(logging.DEBUG)
+
 
 crc16 = crcmod.predefined.mkCrcFun('crc-16-mcrf4xx')
 DLE = 0x10
@@ -112,8 +126,9 @@ class RHSerial(object):
 		checkable = msgto + msgfrom + msgid + msgflag + message + msgtail
 		checksum = bytearray(struct.pack(">H", crc16(str(checkable))))
 		full = msghead + checkable + checksum
+		self.port.flush()
 		self.port.write(full)
-
+		self.port.flush()
 
 	def _processmsg(self, msg):
 		msgto = msg[0]

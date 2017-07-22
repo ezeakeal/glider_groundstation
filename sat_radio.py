@@ -1,9 +1,23 @@
+import time
 import serial
+import struct
 import logging
 from rhserial import RHSerial
+ 
+def setup_custom_logger(name):
+    formatter = logging.Formatter(fmt='%(asctime)s - %(levelname)s - %(module)s - %(message)s')
 
-LOG = logging.getLogger("groundstation.%s" % __name__)
-LOG = logging.getLogger("test")
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+    return logger
+
+LOG = setup_custom_logger('sat_radio')
+LOG.setLevel(logging.DEBUG)
+
 
 class SatRadio(object):
     BROADCAST = 0xFF
@@ -33,7 +47,7 @@ class SatRadio(object):
             if self.user_callback:
                 self.user_callback(data)
         except Exception, e:
-            print LOG.exception("Error in callback")
+            print "Exception in data _callback: %s" % e
  
     def _construct_telemetry(self, 
         callsign, index, hhmmss, 
@@ -46,12 +60,12 @@ class SatRadio(object):
         # Time
         telem_str += hhmmss.strftime("|%H%M%S") if hhmmss else "|      "
         # GPS stuff
-        telem_str += "|%c" % ("N" if lat_dec_deg > 0 else "S") if type(lat_dec_deg) != str else "| "
-        telem_str += "|%08.05f" % abs(lat_dec_deg) if type(lat_dec_deg) != str else "|        "
-        telem_str += "|%c" % ("E" if lon_dec_deg > 0 else "W") if type(lon_dec_deg) != str else "| "
-        telem_str += "|%09.05f" % abs(lon_dec_deg) if type(lon_dec_deg) != str else "|         "
-        telem_str += "|%05.02f" % lat_dil if type(lat_dil) != str else "|     "
-        telem_str += "|%08.02f" % alt if type(alt) != str else "|        "
+        telem_str += "|%c" % ("N" if lat_dec_deg > 0 else "S") if lat_dec_deg else "| "
+        telem_str += "|%08.05f" % abs(lat_dec_deg) if lat_dec_deg else "|        "
+        telem_str += "|%c" % ("E" if lon_dec_deg > 0 else "W") if lon_dec_deg else "| "
+        telem_str += "|%09.05f" % abs(lon_dec_deg) if lon_dec_deg else "|         "
+        telem_str += "|%05.02f" % lat_dil if lat_dil else "|     "
+        telem_str += "|%08.02f" % alt if alt else "|        "
         # Temperatures
         telem_str += "|%+08.03f" % temp1 if temp1 else "|        "
         telem_str += "|%+08.03f" % temp2 if temp2 else "|        "

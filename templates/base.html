@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Glider Ground Station</title>
+    <title>Glider V3 Groundstation</title>
 
     <!-- Bootstrap -->
     <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -13,16 +13,18 @@
     <script src="/static/jquery/js/jquery.js"></script>
     <script src="/static/jquery/js/jquery.cookie.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
-    
+
     <script src="/static/js/renderer.js"></script>
     <script src="/static/js/glider.js"></script>
     <script src="/static/js/images.js"></script>
+    <script src="/static/js/maps.js"></script>
 
     <script src="/static/knob/knob.js"></script>
 
     <script type="text/javascript" src="/static/threejs/three.min.js"></script>
     <script src="/static/threejs/MTLLoader.js"></script>
     <script src="/static/threejs/OBJMTLLoader.js"></script>
+    <script src="/static/threejs/OrbitControls.js"></script>
     <script src="/static/threejs/stats.min.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -39,17 +41,14 @@
     </style>
   </head>
   <body>
+  {% include "navbar.html" %}
     <div class="container-fluid">
-      <div class="page-header">
-        <h3>GliderV3 Groundstation System [Glider/<a href="/basic">Basic</a>/<a href="/map">Map</a>]</h3>
-      </div>
-
         <div class="row">
-            <div class="col-xs-9">
-            {% block main %}No Content{% end %}</title>
+            <div class="col-md-9 col-xs-12">
+                {% block main %}No Content{% end %}
             </div>
-            <div class="col-xs-3">
-            {% block sidebar %}No Content{% end %}</title>
+            <div class="col-md-3 col-xs-12">
+                {% block sidebar %}No Content{% end %}
             </div>
         </div>
     </div>
@@ -59,7 +58,7 @@
     <footer>
         <div class="row">
             <div class="col-lg-12">
-                <p>Daniel Vagg 2017</p>
+                <p>Dan Vagg 2017</p>
             </div>
         </div>
     </footer>

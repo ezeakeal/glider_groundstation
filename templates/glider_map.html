@@ -1,0 +1,24 @@
+<div class="btn-group btn-group-justified">
+    <a
+        href="#" class="btn btn-primary open-nav" data-dest="glider"
+        >
+        <span class="glyphicon glyphicon-map-marker"></span>
+        Glider
+    </a>
+    <a
+        href="#" class="btn btn-primary open-nav" data-dest="target"
+        >
+        <span class="glyphicon glyphicon-map-marker"></span>
+        Destination
+    </a>
+    <a href="#" class="btn btn-info"
+        onclick='map.panTo(marker_obj["glider"].getPosition());'>
+        Centre on glider
+    </a>
+</div>
+
+<div class="embed-responsive embed-responsive-4by3">
+    <div id="map_plot" class="embed-responsive-item">
+        Map Content
+    </div>
+</div>

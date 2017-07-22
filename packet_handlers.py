@@ -22,8 +22,8 @@ class TelemetryHandler(object):
         self.all_sat_last_packets = {}
         self.components = [
             "callsign", "index", "hhmmss", 
-            "NS", "lat", "EW", "lon", "gps_dil", "alt", 
-            "temp1", "temp2", "pressure"
+            "lat", "lon", "gps_dil", "alt",
+            "lat_target", "lon_target", "state"
         ]
         with open(self.output, "a") as output:
             output.write("# " + ",".join(self.components) + "\n")
@@ -78,7 +78,7 @@ class DataHandler(object):
         self.output = output
         self.data_output = data_output
         self.last_packet = None
-        self.components = {"wings": [], "orientation": [], "state": []}
+        self.components = {"wings": [], "orientation": [], "state": [], "heading": []}
         with open(self.output, "a") as output:
             output.write("# time," + ",".join(sorted(self.components.keys())) + "\n")
 

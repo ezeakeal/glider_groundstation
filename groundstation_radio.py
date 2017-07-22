@@ -94,7 +94,7 @@ class GroundRadio(SatRadio):
     def push_data_server(self):
         data_dictionary = {}
         all_data = self.telemetry_handler.get_all_dict()
-        data_dictionary.update(all_data.get("GliderV3", {}))
+        data_dictionary.update(all_data.get("glider", {}))
         data_dictionary.update({"all_data": all_data})
         data_dictionary.update(self.image_handler.get_dict())
         data_dictionary.update(self.data_handler.get_dict())

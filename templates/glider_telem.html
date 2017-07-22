@@ -1,45 +1,64 @@
 <style>
-  #telemPacket dt {
-    width: 70px;
-  }
-  #telemPacket dd {
-    margin-left: 80px;
-  }
-  
+    #telemPacket dt {
+        width: 70px;
+    }
+
+    #telemPacket dd {
+        margin-left: 80px;
+    }
+
 </style>
 
-<h4>Last telemetry packet:</h4>
-  <div id="telemPacket" style="color:#888">
+<h4>Last telemetry packet:
+    <small id="index"></small>
+</h4>
+<div id="telemPacket" style="color:#888">
     <dl class="dl-horizontal">
-      <dt>State:</dt>
-      <dd id="STATE"></dd>
-      <hr/>
-      
-      <dt>HHMMSS:</dt>
-      <dd id="hhmmss"></dd>
-      <dt>Lon:</dt>
-      <dd id="lon"></dd>
-      <dt>Lat:</dt>
-      <dd id="lat"></dd>
-      <dt>Alt:</dt>
-      <dd id="alt"></dd>
-      <dt>Dilution:</dt>
-      <dd id="gps_dil"></dd>
-      
-      <hr/>
-      
-      <dt>Pitch:</dt>
-      <dd id="O_P"></dd>
-      <dt>Roll:</dt>
-      <dd id="O_R"></dd>
-      <dt>Yaw:</dt>
-      <dd id="O_Y"></dd>
-
-      <dt>Temp1:</dt>
-      <dd id="temp1"></dd>
-      <dt>Temp2:</dt>
-      <dd id="temp2"></dd>
+        <dt>State:</dt>
+        <dd id="state"></dd>
     </dl>
 
-    </dl>
-  </div>
+    <div class="col-xs-12" style="border: 1px solid orange; border-radius: 10px">
+        <h4>GPS</h4>
+
+        <dl class="dl-horizontal">
+            <dt>HHMMSS:</dt>
+            <dd id="hhmmss"></dd>
+            <dt>Lat:</dt>
+            <dd id="lat"></dd>
+            <dt>Lon:</dt>
+            <dd id="lon"></dd>
+            <dt>Alt:</dt>
+            <dd id="alt"></dd>
+            <dt>Dilution:</dt>
+            <dd id="gps_dil"></dd>
+        </dl>
+
+    </div>
+
+    <div class="col-xs-12" style="border: 1px solid green; border-radius: 10px">
+        <h4>Target</h4>
+        <dl class="dl-horizontal">
+            <dt>Lat:</dt>
+            <dd id="lat_target"></dd>
+            <dt>Lon:</dt>
+            <dd id="lon_target"></dd>
+            <dt>Heading:</dt>
+            <dd id="H_H"></dd>
+            <dt>Pitch:</dt>
+            <dd id="H_P"></dd>
+        </dl>
+    </div>
+
+    <div class="col-xs-12" style="border: 1px solid blue; border-radius: 10px">
+        <dl class="dl-horizontal">
+            <h4>Orientation</h4>
+            <dt>Pitch:</dt>
+            <dd id="O_P"></dd>
+            <dt>Roll:</dt>
+            <dd id="O_R"></dd>
+            <dt>Yaw:</dt>
+            <dd id="O_Y"></dd>
+        </dl>
+    </div>
+</div>
