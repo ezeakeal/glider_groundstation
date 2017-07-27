@@ -121,8 +121,8 @@ class CommandHandler(tornado.web.RequestHandler):
             self.sendCommand_state(state)
         if severity:
             self.sendCommand_severity(severity)
-        if lon and lat:
-            self.sendCommand_location(lon, lat)
+        if lat and lon:
+            self.sendCommand_location(lat, lon)
         if image:
             self.sendCommand_get_image(image)
         self.set_status(200)
@@ -148,8 +148,8 @@ class CommandHandler(tornado.web.RequestHandler):
     def sendCommand_severity(self, severity):
         return self.sendCommand("TS|%s" % severity)
 
-    def sendCommand_location(self, lon, lat):
-        return self.sendCommand("DEST|%s|%s" % (lon, lat))
+    def sendCommand_location(self, lat, lon):
+        return self.sendCommand("DEST|%s|%s" % (lat, lon))
 
     def sendCommand_get_image(self, image):
         return self.sendCommand("IMAGE|0")
