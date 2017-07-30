@@ -15,14 +15,13 @@ from config import groundstation_config
 from packet_handlers import TelemetryHandler, ImageHandler, DataHandler
 
 LOG = logging.getLogger("groundstation.%s" % __name__)
-LOG.setLevel(logging.DEBUG)
 
 class GroundRadio(SatRadio):
     BROADCAST = 0xFF
     raw_dump = groundstation_config.get("output", "raw_dump")
     telem_dump = groundstation_config.get("output", "telemetry_dump")
-    led_tx = groundstation_config.get("led", "tx")
-    led_rx = groundstation_config.get("led", "rx")
+    led_tx = groundstation_config.getint("led", "tx")
+    led_rx = groundstation_config.getint("led", "rx")
 
     def __init__(self, application):
         self.application = application
@@ -36,7 +35,7 @@ class GroundRadio(SatRadio):
 
         if GPIO:
             for led_ID in [self.led_tx, self.led_rx]:
-                GPIO.setup(led_ID, GPIO.OUT)
+                GPIO.setup([led_ID], GPIO.OUT)
 
         super(GroundRadio, self).__init__(
             groundstation_config.get("radio", "device_path"),
@@ -47,7 +46,6 @@ class GroundRadio(SatRadio):
         )
 
     def packet_handler(self, packet):
-        LOG.debug("I received raw data: %s" % packet)
         try:
             self.raw_dump_file.write("%s\n" % packet)
             self.parse_packet(packet)
@@ -69,7 +67,7 @@ class GroundRadio(SatRadio):
 
     def handle_parsed_packet(self, source, packet_type, packet_data, time_received):
         if GPIO:
-            GPIO.output(self.led_rx, True)
+            GPIO.output(self.led_rx, GPIO.HIGH)
         if packet_type == "T":
             self.telemetry_handler.parse(source, packet_data, time_received)
         if packet_type == "I":
@@ -77,7 +75,15 @@ class GroundRadio(SatRadio):
         if packet_type == "D":
             self.data_handler.parse(source, packet_data, time_received)
         if GPIO:
-            GPIO.output(self.led_rx, False)
+            GPIO.output(self.led_rx, GPIO.LOW)
+
+    def send_packet_led(self, *args, **kwargs):
+        if GPIO:
+            GPIO.output(self.led_tx, GPIO.HIGH)
+        val = self.send_packet(*args, **kwargs)
+        if GPIO:
+            GPIO.output(self.led_rx, GPIO.LOW)
+        return val
 
     def push_data(self, source, packet_type, packet_data, time_received):
         if packet_type == "I":

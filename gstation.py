@@ -38,7 +38,7 @@ except:
 #####################################
 # GLOBALS
 #####################################
-LED_POWER = groundstation_config.get("led", "on")
+LED_POWER = groundstation_config.getint("led", "on")
 RemoteServerURL = "http://tracker.danvagg.space/"
 
 #####################################
@@ -79,6 +79,7 @@ def runWebServer(port):
     application = Application()
     if groundstation_config.getboolean("radio", "enabled"):
         application.radio = GroundRadio(application)
+        application.radio.start()
     http_server = tornado.httpserver.HTTPServer(application)
     print "GO TO: http://localhost:%s/" % port
     http_server.listen(port)
@@ -97,9 +98,10 @@ def runWebServer(port):
 def main():
     # Configure the GPIO if it imported
     if GPIO:
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(LED_POWER, GPIO.OUT)
-        GPIO.output(LED_POWER, True)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup([LED_POWER], GPIO.OUT)
+        GPIO.output(LED_POWER, GPIO.HIGH)
 
     server_port = groundstation_config.get("server", "port")
     runWebServer(server_port)

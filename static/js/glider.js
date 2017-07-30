@@ -71,16 +71,15 @@ function renderTelemetry(telemJSON){
     };
     $.each(telemJSON, addToIDByKey);
 
-    $('#W_L').html(telemJSON['wings'][0])
-    $('#W_R').html(telemJSON['wings'][1])
-    $('#O_R').html(telemJSON['orientation'][0])
-    $('#O_P').html(telemJSON['orientation'][1])
-    $('#O_Y').html(telemJSON['orientation'][2])
-    $('#H_H').html(telemJSON['heading'][0])
-    $('#H_P').html(telemJSON['heading'][1])
-    $('#STATE').html(telemJSON['state'][0])
+    $('#W_L').html(telemJSON['wings'][0]);
+    $('#W_R').html(telemJSON['wings'][1]);
+    $('#O_R').html(telemJSON['orientation'][0]);
+    $('#O_P').html(telemJSON['orientation'][1]);
+    $('#O_Y').html(telemJSON['orientation'][2]);
+    $('#H_H').html(telemJSON['heading'][0]);
+    $('#H_P').html(telemJSON['heading'][1]);
+    $('#STATE').html(telemJSON['all_data']['glider']['state']);
 
-    $.each(telemJSON['state'], addToIDByKey);
     $.each(telemJSON['images'], addToIDByKey);
 
     // Update wing angles
@@ -94,7 +93,7 @@ function renderTelemetry(telemJSON){
 }
 
 function handleTelemetry(telemJSON){
-    renderTelemetry(telemJSON)
+    renderTelemetry(telemJSON);
     handleImages(telemJSON);
 }
 

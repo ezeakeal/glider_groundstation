@@ -41,6 +41,8 @@ function create_marker(callsign) {
 }
 
 function updateMapMarkers(all_data){
+    if (!all_data["glider"])
+        return;
     // Hack to add target marker
     target_callsign = "TARGET";
     if (! marker_obj.hasOwnProperty(target_callsign))

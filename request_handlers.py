@@ -136,7 +136,7 @@ class CommandHandler(tornado.web.RequestHandler):
         # But no.. it's not. Not if the string comes from the dropdown list in the
         # web page. Because even though the characters are what you'd expect.. they
         # arent the same. I compared and checked.. it's black magic.
-        response = self.application.radio.send_packet("%s" % command, address=dest_addr)
+        response = self.application.radio.send_packet_led("%s" % command, address=dest_addr)
         LOG.debug("Command response: %s" % (response))
 
     def sendCommand_pitch(self, pitch):
