@@ -1,12 +1,27 @@
 function handleImages(telemJson) {
     image_panel = $('#image_display');
     var image_list = telemJson['images'];
-    image_panel.html('');
-    $.each(image_list, function( index, value ) {
-        console.log("Parsing: " + value);
-        var timestamp = value.split("_")[1].split(".")[0]
-        var imagetime = timestamp.substring(0, 2) + ":" + timestamp.substring(2, 4) + ":" + timestamp.substring(4, 6)
-        image_panel.append('<div class="col-xs-12"><div class = "panel panel-default"><div class = "panel-heading">'+imagetime+'</div><div class = "panel-body"><img class="img-responsive" src="'+value+'" alt=""></div></div></div>')
-    });
+    for (var image_id in image_list) {
+        var image_data = image_list[image_id];
+        var dom_id = image_id .slice(0, -4)
+        if ($('#' + dom_id ).length && image_data['status'] == "Finished")
+            continue;
+        image_data['parts'] = image_data['parts'].join(" ");
+        img_panel_content = [
+            '<div class="col-xs-12" id="'+dom_id +'">',
+                '<div class="col-xs-6">',
+                    '<img class="img-responsive" src="static/images/' + image_id + '">"',
+                '</div>',
+                '<div class="col-xs-6">',
+                    '<pre>'+JSON.stringify(image_data, null, 2)+'</pre>',
+                '</div>',
+            '</div>'
+        ].join("");
+
+        if ($('#' + dom_id ).length)
+            $('#' + dom_id ).html(img_panel_content);
+        else
+            image_panel.prepend(img_panel_content);
+    }
 }
 

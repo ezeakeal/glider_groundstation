@@ -123,7 +123,7 @@ class CommandHandler(tornado.web.RequestHandler):
             self.sendCommand_severity(severity)
         if lat and lon:
             self.sendCommand_location(lat, lon)
-        if image:
+        if image is not None:
             self.sendCommand_get_image(image)
         self.set_status(200)
         self.redirect('/')

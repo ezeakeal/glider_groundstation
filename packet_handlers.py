@@ -6,6 +6,7 @@
 #   Daniel Vagg 2017
 #
 ##############################################
+import base64
 import os
 import time
 import logging
@@ -63,13 +64,12 @@ class TelemetryHandler(object):
                 data[key] = self.last_packet[ind].strip()
         try:
             callsign = data['callsign']
-            if float(data['lon']) != 0 and float(data['lat']) != 0:
+            if data['lon'] and data['lat']:
                 self.all_sat_last_packets[callsign] = data
             else:
                 LOG.warning("Empty GPS coordinate received")
-        except Exception, e:
-            LOG.error("Error in parsing all_sat_last_packets")
-            LOG.error(e)
+        except:
+            LOG.exception("Error in parsing all_sat_last_packets")
 
 
 class DataHandler(object):
@@ -121,15 +121,15 @@ class ImageHandler(object):
         self.current_image = None
         self.current_image_file = None
         self.last_image = None
-        self.image_list = []
-    
+        self.image_list = {}
+
     def _start_image(self, name):
         image_path = os.path.join(self.output_dir, os.path.basename(name))
         self.current_image = image_path
         self.current_image_file = open(image_path, "wb")
 
-    def _store_image_part(self, image_index, image_part):
-        self.current_image_file.write(image_part)
+    def _store_image_part(self, image_part):
+        self.current_image_file.write(base64.b64decode(image_part))
 
     def _end_image(self):
         self.last_image = self.current_image
@@ -142,18 +142,22 @@ class ImageHandler(object):
         if image_signal == "S":
             print "Started receiving new image (From: %s)" % source_id
             self._start_image(packet_parts[1])
+            self.image_list[os.path.basename(self.current_image)] = {
+                "status": "Started",
+                "parts": [],
+                "last_update": time.time()
+            }
         if image_signal == "P" and self.current_image:
             print "Receiving image part %s" % packet_parts[1]
-            self._store_image_part(packet_parts[1], "|".join(packet_parts[2:]))
+            self._store_image_part(packet_parts[2])
+            self.image_list[os.path.basename(self.current_image)]['status'] = "Receiving"
+            self.image_list[os.path.basename(self.current_image)]['last_update'] = time.time()
+            self.image_list[os.path.basename(self.current_image)]['parts'].append(packet_parts[1])
         if image_signal == "E":
             print "Finished receiving image (%s)" % self.current_image
+            self.image_list[os.path.basename(self.current_image)]['status'] = "Finished"
+            self.image_list[os.path.basename(self.current_image)]['last_update'] = time.time()
             self._end_image()
-        
-    def get(self, index=-1):
-        if index < len(self.image_list):
-            return self.image_list[index]
-        else:
-            return None
 
     def get_dict(self):
         data = {}

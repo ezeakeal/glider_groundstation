@@ -1,76 +1,114 @@
+<style>
+.command-group {
+
+}
+.command {
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 12px 25px rgba(0, 105, 204, 0.43);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: #6fcee2;
+}
+</style>
 <div>
-    <div class="row">
-        <h4>Pitch adjust</h4>
-        <form role="form" class="form-inline" action="/postCommand" method="post">
-            <div class="form-group">
-                <label for="pitch">Desired Pitch</label>
-                <input type="number" max="0" min="-90" class="form-control" name="pitch" id="pitch" placeholder="-30">
-            </div>
-            <button type="submit" id="pitch_submit" class="btn btn-primary">Update pitch</button>
-        </form>
+    <div class="row command-group">
+        <div class="col-md-5 command">
+            <h4 class="command-heading">State change</h4>
+
+            <form class="form-horizontal" action="/postCommand" method="post">
+                <div class="form-group">
+                    <label for="select_state" class="col-sm-4 control-label">New State</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="select_state" id="select_state">
+                            <option>HEALTH_CHECK</option>
+                            <option>ASCENT</option>
+                            <option>RELEASE</option>
+                            <option>FLIGHT</option>
+                            <option>PARACHUTE</option>
+                            <option>RECOVER</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" id="state_submit" class="btn btn-primary btn-sm btn-block">Update state</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-5 command">
+            <h4 class="command-heading">Request image</h4>
+            <form class="form-horizontal" action="/postCommand" method="post">
+                <div class="col-sm-12">
+                    <input type="number" class="form-control" name="image" id="image" style="display:none;">
+                    <div class="form-group">
+                        <button type="submit" id="state_submit" class="btn btn-primary btn-sm btn-block">Request Image</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </div>
+    <div class="row command-group">
+        <div class="col-md-5 command">
+            <h4>Pitch adjust</h4>
+            <form class="form-horizontal" action="/postCommand" method="post">
+                <div class="form-group">
+                    <label for="pitch" class="col-sm-4 control-label">Desired Pitch</label>
+                    <div class="col-md-8">
+                        <input type="number" max="0" min="-90" class="form-control" name="pitch" id="pitch" placeholder="-30">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" id="pitch_submit" class="btn btn-primary btn-sm btn-block">Update pitch</button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
-    <hr/>
-    
-    <div class="row">
-        <h4>State change</h4>
-        <form role="form" class="form-inline" action="/postCommand" method="post">
-            <div class="form-group">
-                <label for="pitch">New State</label>
-                <select class="form-control" name="select_state" id="select_state">
-                    <option>HEALTH_CHECK</option>
-                    <option>ASCENT</option>
-                    <option>RELEASE</option>
-                    <option>FLIGHT</option>
-                    <option>PARACHUTE</option>
-                    <option>RECOVER</option>
-                </select>
-            </div>
-            <button type="submit" id="state_submit" class="btn btn-primary">Update state</button>
-        </form>
+        <div class="col-md-5 command">
+            <h4>Update turn severity</h4>
+            <form class="form-horizontal" action="/postCommand" method="post">
+                <div class="form-group">
+                    <label for="pitch" class="col-sm-4 control-label">New severity</label>
+                    <div class="col-md-8">
+                        <input type="number" min=".1" max="5" step=".1" class="form-control" name="severity" id="severity" placeholder="1">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" id="state_submit" class="btn btn-primary btn-sm btn-block">Update severity</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-
-<hr/>
-    
-    <div class="row">
-        <h4>Update turn severity</h4>
-        <form role="form" class="form-inline" action="/postCommand" method="post">
-            <div class="form-group">
-                <label for="pitch">New severity</label>
-                <input type="number" min=".1" max="5" step=".1" class="form-control" name="severity" id="severity" placeholder="1">
-            </div>
-            <button type="submit" id="state_submit" class="btn btn-primary">Update severity</button>
-        </form>
+    <div class="row command-group">
+        <div class="col-md-5 command">
+            <h4>Update destination</h4>
+            <form class="form-horizontal" action="/postCommand" method="post">
+                <div class="form-group">
+                    <label for="pitch" class="col-sm-4 control-label">Longitude</label>
+                    <div class="col-md-8">
+                        <input type="number" step="0.0000001" class="form-control" name="lon" id="lon_input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pitch" class="col-sm-4 control-label">Lattitude</label>
+                    <div class="col-md-8">
+                        <input type="number" step="0.0000001" class="form-control" name="lat" id="lat_input">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" id="state_submit" class="btn btn-primary btn-sm btn-block">Update destination</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-
-<hr/>
-    
-    <div class="row">
-        <h4>Update destination</h4>
-        <form role="form" class="form-inline" action="/postCommand" method="post">
-            <div class="form-group">
-                <label for="pitch">Longitude</label>
-                <input type="number" step="0.0000001" class="form-control" name="lon" id="lon_input">
-            </div>
-            <div class="form-group">
-                <label for="pitch">Lattitude</label>
-                <input type="number" step="0.0000001" class="form-control" name="lat" id="lat_input">
-            </div>
-            <button type="submit" id="state_submit" class="btn btn-primary">Update destination</button>
-        </form>
-    </div>
-
-<hr/>
-
-    <div class="row">
-        <h4>Request Image</h4>
-        <form role="form" class="form-inline" action="/postCommand" method="post">
-            <div class="form-group">
-                <input type="number" class="form-control" name="image" id="image" value="-1">
-            </div>
-            <button type="submit" id="state_submit" class="btn btn-primary">Request Image</button>
-        </form>
-    </div>
-
-<hr/>
 </div>
