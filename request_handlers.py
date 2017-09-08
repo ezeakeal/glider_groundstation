@@ -158,7 +158,8 @@ class CommandHandler(tornado.web.RequestHandler):
 class PushedDataHandler(tornado.web.RequestHandler):
 
     def post(self):
-        data = self.request.body
+        LOG.debug("Received post_data: %s" % self.request.body)
+        data = json.loads(self.request.body)
         if not self.application.radio:
             raise Exception("No radio available")
         else:
