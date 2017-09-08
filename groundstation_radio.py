@@ -78,12 +78,13 @@ class GroundRadio(SatRadio):
 
     def upload_packet(self, data):
         """Upload all packets to remote server to be parsed publicly"""
-        json_packet = {
+        payload = {
             "from": str(data['from']),
             "message": str(data['message']),
             "rssi": str(data['rssi'])
         }
-        requests.post(self.remote_groundstation_push_url, json=json_packet)
+        headers = {'content-type': 'application/json'}
+        requests.post(self.remote_groundstation_push_url, data=json.dumps(payload), headers=headers)
 
     def handle_parsed_packet(self, source, packet_type, packet_data, packet_signal, time_received):
         if GPIO:
