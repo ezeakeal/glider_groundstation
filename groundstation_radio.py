@@ -73,7 +73,6 @@ class GroundRadio(SatRadio):
         data_parts = str(data_packet).split("|")
         packet_type = data_parts[0]
         packet_data = data_parts[1:]
-        self.push_data(source, packet_type, packet_data, time_received)
         self.push_data_client()
         self.handle_parsed_packet(source, packet_type, packet_data, packet_signal, time_received)
 

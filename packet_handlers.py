@@ -12,6 +12,7 @@ import time
 import logging
 
 import requests
+from config import groundstation_config
 
 LOG = logging.getLogger('groundstation.%s' % __name__)
 
@@ -28,6 +29,9 @@ class TelemetryHandler(object):
             "lat", "lon", "gps_dil", "alt",
             "lat_target", "lon_target", "state"
         ]
+
+        self.remote_target_json_dump= groundstation_config.get("remote", "json_dump_url")
+
         with open(self.output, "a") as output:
             output.write("# " + ",".join(self.components) + "\n")
     
@@ -76,7 +80,7 @@ class TelemetryHandler(object):
 
 
     def _push_all_sat_to_tracking_json(self):
-        requests.put(self.remote_groundstation_push_url, json=self.all_sat_last_packets)
+        requests.put(self.remote_target_json_dump, json=self.all_sat_last_packets)
 
 
 class DataHandler(object):
