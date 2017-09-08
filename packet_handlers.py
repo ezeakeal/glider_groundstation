@@ -40,7 +40,6 @@ class TelemetryHandler(object):
         self.last_packet = packet_parts
         self._store_packet(packet_parts, time_stamp)
         self._parse_to_all_sat(time_stamp)
-        self._push_all_sat_to_tracking_json()
 
     def get(self, param):
         if param not in self.components:
@@ -73,10 +72,6 @@ class TelemetryHandler(object):
                 LOG.warning("Empty GPS coordinate received")
         except:
             LOG.exception("Error in parsing all_sat_last_packets")
-
-
-    def _push_all_sat_to_tracking_json(self):
-        requests.put(self.remote_groundstation_push_url, json=self.all_sat_last_packets)
 
 
 class DataHandler(object):
