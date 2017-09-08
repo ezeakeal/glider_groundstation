@@ -38,3 +38,10 @@ If using chrome on mobile, you may need to allow sounds to play automatically
 
 You can do so by putting this in the chrome URL: `chrome://flags/#disable-gesture-requirement-for-media-playback`
  (Thanks to https://stackoverflow.com/a/28812647)
+
+### Using the wifi configure script
+
+Create an adhoc network using hotspotd (https://github.com/prahladyeri/hotspotd)
+
+* Set your wlan0 interface to have 192.168.43.100 as its IP
+    * localtracker.danvagg.space resolves to this

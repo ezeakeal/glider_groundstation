@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Glider V3 Groundstation</title>
 
-    <link href="{{ static_url("css/groundstation_base.css") }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ static_url("css/groundstation_base.css") }}" type="text/css">
+    <link rel="stylesheet" href="{{ static_url("bootstrap/bootstrap.min.css") }}" type="text/css">
+      <link rel="stylesheet" href="{{ static_url("bootstrap/bootstrap-theme.min.css") }}" type="text/css">
 
     <style>
     html,body
@@ -42,9 +42,9 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script  src="https://code.jquery.com/jquery-1.11.2.min.js"  integrity="sha256-Ls0pXSlb7AYs7evhd+VLnWsZ/AqEHcXBeMZUycz/CcA="  crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="{{ static_url("jquery/jquery-1.11.2.min.js") }}"></script>
+    <script src="{{ static_url("jquery/jquery.cookie.js") }}"></script>
+    <script src="{{ static_url("bootstrap/bootstrap.min.js") }}"></script>
 
     <script src="{{ static_url("threejs/three.min.js") }}"></script>
     <script src="{{ static_url("threejs/MTLLoader.js") }}"></script>
@@ -52,9 +52,7 @@
     <script src="{{ static_url("threejs/OrbitControls.js") }}"></script>
     <script src="{{ static_url("threejs/stats.min.js") }}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
-
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="{{ static_url("jquery/jquery.knob.min.js") }}"></script>
 
     <script src="{{ static_url("js/renderer.js") }}"></script>
     <script src="{{ static_url("js/glider.js") }}"></script>

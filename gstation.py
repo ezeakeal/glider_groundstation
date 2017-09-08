@@ -60,6 +60,7 @@ class Application(tornado.web.Application):
             (r"/", MainHandler),
             (r"/map", MapHandler),
             (r"/basic", BasicHandler),
+            (r"/push_data", PushedDataHandler),
             (r'/(favicon.ico)', tornado.web.StaticFileHandler, {"path": ""}),
             (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': settings['static_path']}),
             (r"/getTelem", TelemHandler),
@@ -77,9 +78,8 @@ class Application(tornado.web.Application):
 
 def runWebServer(port):
     application = Application()
-    if groundstation_config.getboolean("radio", "enabled"):
-        application.radio = GroundRadio(application)
-        application.radio.start()
+    application.radio = GroundRadio(application)
+    application.radio.start()
     http_server = tornado.httpserver.HTTPServer(application)
     print "GO TO: http://localhost:%s/" % port
     http_server.listen(port)

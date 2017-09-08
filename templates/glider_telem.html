@@ -12,9 +12,19 @@
 <h4>Last telemetry packet:
     <small id="index"></small>
 </h4>
+
+<h4>Commands:
+    <small id="command_recv"></small>
+</h4>
+
 <div id="telemPacket" style="color:#888">
-    <div class="text-center">
-        <h3><span class="label label-success" id="STATE"></span></h3>
+    <div class="row text-center">
+        <div class="col-xs-6">
+            <h3>State: <span class="label label-success" id="STATE"></span></h3>
+        </div>
+        <div class="col-xs-6">
+            <h3>Signal: <span class="text-info" id="SIGNAL"></span></h3>
+        </div>
     </dl>
 
     <div class="col-xs-12" style="border: 1px solid orange; border-radius: 10px">
@@ -31,8 +41,11 @@
             <dd id="alt"></dd>
             <dt>Dilution:</dt>
             <dd id="gps_dil"></dd>
+            <dt>Speed:</dt>
+            <dd><span id="gps_heading_speed"></span>m/s</dd>
+            <dt>Heading:</dt>
+            <dd id="gps_heading_heading"></dd>
         </dl>
-
     </div>
 
     <div class="col-xs-12" style="border: 1px solid green; border-radius: 10px">

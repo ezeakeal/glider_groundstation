@@ -11,6 +11,8 @@ import os
 import time
 import logging
 
+import requests
+
 LOG = logging.getLogger('groundstation.%s' % __name__)
 
 #####################################
@@ -34,11 +36,12 @@ class TelemetryHandler(object):
             packet_parts = ["%s" % time_stamp] + packet_parts
             output.write(",".join(packet_parts) + "\n")
 
-    def parse(self, source_id, packet_parts, time_stamp, **kwargs):
+    def parse(self, source_id, packet_parts, packet_signal, time_stamp, **kwargs):
         self.last_packet = packet_parts
         self._store_packet(packet_parts, time_stamp)
         self._parse_to_all_sat(time_stamp)
-        
+        self._push_all_sat_to_tracking_json()
+
     def get(self, param):
         if param not in self.components:
             LOG.error("Parameter %s is not in components (%s)" % (param, self.components))
@@ -72,13 +75,17 @@ class TelemetryHandler(object):
             LOG.exception("Error in parsing all_sat_last_packets")
 
 
+    def _push_all_sat_to_tracking_json(self):
+        requests.put(self.remote_groundstation_push_url, json=self.all_sat_last_packets)
+
+
 class DataHandler(object):
     def __init__(self, output="output/glider_data.data", data_output="output/data_packets.data"):
         # O:-3.5_4.3_11.7', 'W:0.0_0.0
         self.output = output
         self.data_output = data_output
         self.last_packet = None
-        self.components = {"wings": [], "orientation": [], "state": [], "heading": []}
+        self.components = {"wings": [], "orientation": [], "heading": [], "gps_heading": [], "command_recv": []}
         with open(self.output, "a") as output:
             output.write("# time," + ",".join(sorted(self.components.keys())) + "\n")
 
@@ -92,7 +99,7 @@ class DataHandler(object):
                 log_components.append(" ".join(self.components[key]))
             output.write(",".join(log_components) + "\n")
 
-    def parse(self, source_id, packet_parts, time_stamp, **kwargs):
+    def parse(self, source_id, packet_parts, packet_signal, time_stamp, **kwargs):
         try:
             for packet in packet_parts:
                 packet_type, packet_data = packet.split(":")
@@ -100,6 +107,7 @@ class DataHandler(object):
                     if component.startswith(packet_type.lower()):
                         self.components[component] = packet_data.split("_")
                         break
+            self.components['signal'] = [str(packet_signal)]
             self.last_packet = packet_parts
         except:
             pass
@@ -134,10 +142,9 @@ class ImageHandler(object):
     def _end_image(self):
         self.last_image = self.current_image
         self.current_image_file.close()
-        self.image_list.insert(0, self.last_image)
         self.current_image = None
     
-    def parse(self, source_id, packet_parts, time_stamp, **kwargs):
+    def parse(self, source_id, packet_parts, packet_signal, time_stamp, **kwargs):
         image_signal = packet_parts[0]
         if image_signal == "S":
             print "Started receiving new image (From: %s)" % source_id

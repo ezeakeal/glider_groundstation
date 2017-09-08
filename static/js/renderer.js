@@ -141,7 +141,6 @@ function render(telemJSON) {
                 Math.sin(de2ra(parseFloat(telemJSON['heading'][1]))),
                 Math.cos(de2ra(parseFloat(telemJSON['heading'][0])))
             );
-            dir.normalize(); //normalize the direction vector (convert to vector of length 1)
             gliderArrow.setDirection(dir)
 
         }

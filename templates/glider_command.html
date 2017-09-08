@@ -28,6 +28,8 @@
                             <option>FLIGHT</option>
                             <option>PARACHUTE</option>
                             <option>RECOVER</option>
+                            <option>TEST_CHUTE</option>
+                            <option>TEST_RELEASE</option>
                         </select>
                     </div>
                 </div>
@@ -92,15 +94,15 @@
             <h4>Update destination</h4>
             <form class="form-horizontal" action="/postCommand" method="post">
                 <div class="form-group">
-                    <label for="pitch" class="col-sm-4 control-label">Longitude</label>
-                    <div class="col-md-8">
-                        <input type="number" step="0.0000001" class="form-control" name="lon" id="lon_input">
-                    </div>
-                </div>
-                <div class="form-group">
                     <label for="pitch" class="col-sm-4 control-label">Lattitude</label>
                     <div class="col-md-8">
                         <input type="number" step="0.0000001" class="form-control" name="lat" id="lat_input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pitch" class="col-sm-4 control-label">Longitude</label>
+                    <div class="col-md-8">
+                        <input type="number" step="0.0000001" class="form-control" name="lon" id="lon_input">
                     </div>
                 </div>
                 <div class="col-sm-12">

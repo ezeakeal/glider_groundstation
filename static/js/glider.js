@@ -48,8 +48,10 @@ function setTelemSocket(){
 function parseTelemetryData(telemData){
     telemJSON =  JSON.parse(telemData);
     TELEMETRY = telemJSON;
-    window.updateMapMarkers(TELEMETRY['all_data']);
     window.handleTelemetry(TELEMETRY);
+    if (typeof(google) != "undefined"){
+        window.updateMapMarkers(TELEMETRY['all_data']);
+    }
     beep();
 }
 
@@ -78,7 +80,10 @@ function renderTelemetry(telemJSON){
     $('#O_Y').html(telemJSON['orientation'][2]);
     $('#H_H').html(telemJSON['heading'][0]);
     $('#H_P').html(telemJSON['heading'][1]);
-    $('#STATE').html(telemJSON['all_data']['glider']['state']);
+    $('#SIGNAL').html(telemJSON['signal'][0]);
+    $('#STATE').html(telemJSON['state']);
+    $('#gps_heading_speed').html(telemJSON['gps_heading'][0]);
+    $('#gps_heading_heading').html(telemJSON['gps_heading'][1]);
 
     $.each(telemJSON['images'], addToIDByKey);
 

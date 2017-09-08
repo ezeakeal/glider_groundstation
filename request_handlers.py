@@ -153,3 +153,15 @@ class CommandHandler(tornado.web.RequestHandler):
 
     def sendCommand_get_image(self, image):
         return self.sendCommand("IMAGE|0")
+
+
+class PushedDataHandler(tornado.web.RequestHandler):
+
+    def post(self):
+        data = self.request.body
+        if not self.application.radio:
+            raise Exception("No radio available")
+        else:
+            self.application.radio.parse_packet(data)
+        self.set_status(200)
+        self.write(data)

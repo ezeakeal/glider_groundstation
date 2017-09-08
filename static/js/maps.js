@@ -1,5 +1,18 @@
 /* google maps -----------------------------------------------------*/
-google.maps.event.addDomListener(window, 'load', initialize_map);
+
+$.ajax({
+    cache: false,
+    dataType: "script",
+    timeout: 1000,
+    url: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAE8EJRXLstU4SZKkANpQd8YRHgS6bAidU",
+    success: function(){
+        console.log("loading gmap");
+        setTimeout(
+            google.maps.event.addDomListener(window, 'load', initialize_map),
+            500
+        );
+    }
+});
 
 var map;
 var infowindow;
