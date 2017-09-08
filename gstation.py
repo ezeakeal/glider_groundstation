@@ -78,11 +78,17 @@ class Application(tornado.web.Application):
 
 def runWebServer(port):
     application = Application()
+
+    # Create the radio (Data-receiver even if no radio attached)
     application.radio = GroundRadio(application)
-    application.radio.start()
+    if groundstation_config.getboolean("radio", "enabled"):
+        application.radio.start()
+
+    # Start the actual server
     http_server = tornado.httpserver.HTTPServer(application)
     print "GO TO: http://localhost:%s/" % port
     http_server.listen(port)
+
     try:
         tornado.ioloop.IOLoop.instance().start()
     except:
